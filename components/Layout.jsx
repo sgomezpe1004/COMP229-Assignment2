@@ -44,7 +44,7 @@ export default function Layout({ children }) {
 
   const links = [
     { link: '/', label: 'Home' },
-    { link: '/about', label: 'About' },
+    { link: '/about', label: 'Resume' },
     { link: '/education', label: 'Education' },
     { link: '/project', label: 'Projects' },
     { link: '/services', label: 'Services' },
