@@ -30,6 +30,7 @@ import {
   Edit as EditIcon,
   Login as LoginIcon,
   Delete as DeleteIcon,
+  Contacts as ContactsIcon,
 } from '@mui/icons-material';
 
 export default function Layout({ children }) {
@@ -48,6 +49,7 @@ export default function Layout({ children }) {
     { link: '/project', label: 'Projects' },
     { link: '/services', label: 'Services' },
     { link: '/contact', label: 'Contact' },
+    { link: '/contacts-crud', label: 'Add Contacts', icon: <ContactsIcon fontSize="small" /> }
   ];
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
@@ -100,7 +102,13 @@ export default function Layout({ children }) {
       <List>
         {links.map(item => (
           <ListItem key={item.label} disablePadding>
-            <ListItemButton component={Link} to={item.link} selected={location.pathname === item.link} sx={{ textAlign: 'center' }}>
+            <ListItemButton
+              component={Link}
+              to={item.link}
+              selected={location.pathname === item.link}
+              sx={{ textAlign: 'center' }}
+            >
+              {item.icon && <Box sx={{ mr: 1 }}>{item.icon}</Box>}
               <ListItemText primary={item.label} />
             </ListItemButton>
           </ListItem>
@@ -173,7 +181,15 @@ export default function Layout({ children }) {
 
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: 0.5 }}>
               {links.map(item => (
-                <Button key={item.label} component={Link} to={item.link} variant={location.pathname === item.link ? 'contained' : 'text'} size="small" sx={{ borderRadius: 1, fontWeight: 600, px: 1.5, py: 0.5 }}>
+                <Button
+                  key={item.label}
+                  component={Link}
+                  to={item.link}
+                  variant={location.pathname === item.link ? 'contained' : 'text'}
+                  size="small"
+                  startIcon={item.icon || null}
+                  sx={{ borderRadius: 1, fontWeight: 600, px: 1.5, py: 0.5 }}
+                >
                   {item.label}
                 </Button>
               ))}
@@ -203,7 +219,13 @@ export default function Layout({ children }) {
         </Toolbar>
       </AppBar>
 
-      <Drawer variant="temporary" open={mobileOpen} onClose={handleDrawerToggle} ModalProps={{ keepMounted: true }} sx={{ display: { xs: 'block', md: 'none' }, '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 } }}>
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{ display: { xs: 'block', md: 'none' }, '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 } }}
+      >
         {drawer}
       </Drawer>
 
@@ -229,11 +251,16 @@ export default function Layout({ children }) {
         </DialogActions>
       </Dialog>
 
-      <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
         <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
           {snackbar.message}
         </Alert>
       </Snackbar>
     </Box>
-  );
+);
 }

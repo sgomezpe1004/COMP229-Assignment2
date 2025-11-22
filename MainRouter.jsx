@@ -10,8 +10,8 @@ import Services from './src/services';
 import Register from './src/register';
 import Login from './src/login';
 import EditProfile from './src/edit-profile';
-import Profile from './src/profile'
-
+import Profile from './src/profile';
+import ContactsCrud from './src/contactsmanager'; // <-- Nuevo import
 
 const MainRouter = () => {
   return (
@@ -27,6 +27,7 @@ const MainRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/contacts-crud" element={<ContactsCrud />} />
       </Routes>
     </Layout>
   );

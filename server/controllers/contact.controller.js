@@ -1,6 +1,7 @@
 import Contact from "../models/contact.model.js";
 import extend from "lodash/extend.js";
 import errorHandler from "./error.controller.js";
+
 const create = async (req, res) => {
   const contact = new Contact(req.body);
   try {
@@ -14,9 +15,11 @@ const create = async (req, res) => {
     });
   }
 };
+
 const list = async (req, res) => {
   try {
-    let contacts = await Contact.find().select("firstname lastname email");
+    
+    let contacts = await Contact.find().select("firstname lastname email contactNumber");
     res.json(contacts);
   } catch (err) {
     return res.status(400).json({
@@ -24,11 +27,12 @@ const list = async (req, res) => {
     });
   }
 };
+
 const contactByID = async (req, res, next, id) => {
   try {
     let contact = await Contact.findById(id);
     if (!contact)
-      return res.status("400").json({
+      return res.status(400).json({
         error: "Contact not found",
       });
     req.contact = contact;
@@ -39,19 +43,17 @@ const contactByID = async (req, res, next, id) => {
     });
   }
 };
+
 const read = (req, res) => {
-  //req.contact = undefined
-  //req.profile.salt = undefined
   return res.json(req.contact);
 };
+
 const update = async (req, res) => {
   try {
     let contact = req.contact;
     contact = extend(contact, req.body);
     contact.updated = Date.now();
     await contact.save();
-    //user.hashed_password = undefined
-    //user.salt = undefined
     res.json(contact);
   } catch (err) {
     return res.status(400).json({
@@ -59,11 +61,11 @@ const update = async (req, res) => {
     });
   }
 };
+
 const remove = async (req, res) => {
   try {
     let contact = req.contact;
-    let deletedContact = await contact.deleteOne();
-    //deletedContact = undefined
+    await contact.deleteOne();
     return res.status(200).json({
       message: "Successfully deleted!",
     });
@@ -74,9 +76,9 @@ const remove = async (req, res) => {
   }
 };
 
-// New function to remove multiple contacts
+
 const removeMany = async (req, res) => {
-  const { ids } = req.body; // Assuming IDs are sent in the request body
+  const { ids } = req.body;
   if (!Array.isArray(ids) || ids.length === 0) {
     return res.status(400).json({
       error: "Please provide an array of IDs to delete.",
@@ -93,4 +95,5 @@ const removeMany = async (req, res) => {
     });
   }
 };
+
 export default { create, contactByID, read, list, remove, removeMany, update };
