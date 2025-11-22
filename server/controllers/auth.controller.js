@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import { expressjwt } from "express-jwt";
 import config from "./../../config/config.js";
+
 const signin = async (req, res) => {
   try {
     let user = await User.findOne({ email: req.body.email });
@@ -23,17 +24,42 @@ const signin = async (req, res) => {
     return res.status(401).json({ error: "Could not sign in" });
   }
 };
+
+
+const signup = async (req, res) => {
+  try {
+    const user = new User(req.body);
+    await user.save();
+    const token = jwt.sign({ _id: user._id }, config.jwtSecret);
+    res.cookie("t", token, { expire: new Date() + 9999 });
+    return res.status(200).json({
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
 const signout = (req, res) => {
   res.clearCookie("t");
   return res.status(200).json({
     message: "signed out",
   });
 };
+
 const requireSignin = expressjwt({
   secret: config.jwtSecret,
   algorithms: ["HS256"],
   userProperty: "auth",
 });
+
 const hasAuthorization = (req, res, next) => {
   const authorized = req.profile && req.auth && req.profile._id == req.auth._id;
   if (!authorized) {
@@ -43,4 +69,5 @@ const hasAuthorization = (req, res, next) => {
   }
   next();
 };
-export default { signin, signout, requireSignin, hasAuthorization };
+
+export default { signin, signup, signout, requireSignin, hasAuthorization };

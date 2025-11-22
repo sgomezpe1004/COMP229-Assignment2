@@ -1,40 +1,35 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
+import Layout from './components/Layout';
 import About from './src/about';
 import Contact from './src/contact';
 import Education from './src/education';
 import Project from './src/project';
-import Layout from './components/Layout';
-import myImage from './public/images.png';
 import Services from './src/services';
+import Register from './src/register';
+import Login from './src/login';
+import EditProfile from './src/edit-profile';
+import Profile from './src/profile'
+
 
 const MainRouter = () => {
   return (
-    <div>
-      <Layout />
-
-      
-      <div style={{ textAlign: 'left', margin: '20px 0' }}>
-        <img 
-          src={myImage} 
-          alt="My Image" 
-          style={{ width: '50px', height: '100px' }} 
-        />
-      </div>
-
+    <Layout>
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/about" element={<About />} />
-        <Route exact path="/education" element={<Education />} />
-        <Route exact path="/project" element={<Project />} />
-        <Route exact path="/contact" element={<Contact />} />
-        <Route exact path="/services" element={<Services />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/education" element={<Education />} />
+        <Route path="/project" element={<Project />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
-    </div>
+    </Layout>
   );
 };
 
 export default MainRouter;
-
-{/* MainRouter component that sets up the routes for the application */}

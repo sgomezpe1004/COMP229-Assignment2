@@ -1,9 +1,14 @@
-function handleError(req, res) {
-  // Your code to handle the error
+function handleError(err, req, res, next) {
+  const statusCode = err.status || 500;
+  res.status(statusCode).json({
+    success: false,
+    message: err.message || 'An unexpected error occurred',
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
 }
 function getErrorMessage(errMsg) {
   console.log(errMsg);
-} // Export the controller function
+} 
 export default {
   handleError: handleError,
   getErrorMessage: getErrorMessage,

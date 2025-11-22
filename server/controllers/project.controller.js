@@ -75,9 +75,9 @@ const remove = async (req, res) => {
     } 
     }
     
-// New function to remove multiple contacts
+
 const removeMany = async (req, res) => {
-    const { ids } = req.body; // Assuming IDs are sent in the request body
+    const { ids } = req.body; 
     if (!Array.isArray(ids) || ids.length === 0) {
         return res.status(400).json({
             error: "Please provide an array of IDs to delete."

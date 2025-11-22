@@ -24,13 +24,14 @@ app.use(compress());
 app.use(helmet());
 app.use(cors());
 
-// Routes
-app.use("/api", userRoutes);
+
+app.use("/api", authRoutes);   
+app.use("/api", userRoutes);    
 app.use("/api", contactRoutes);
 app.use("/api", projectRoutes);
 app.use("/api", educationRoutes);
-app.use("/", userRoutes);
-app.use("/", authRoutes); 
+
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
