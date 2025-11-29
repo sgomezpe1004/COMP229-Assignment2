@@ -1,3 +1,4 @@
+// server.js
 import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -22,16 +23,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(compress());
 app.use(helmet());
-app.use(cors());
 
+// Configura CORS
+app.use(cors({
+  origin: process.env.FRONTEND_URL || "https://comp-229-a4.vercel.app",
+  credentials: true
+}));
 
-app.use("/api", authRoutes);   
-app.use("/api", userRoutes);    
-app.use("/api", contactRoutes);
-app.use("/api", projectRoutes);
-app.use("/api", educationRoutes);
-
-
+// Rutas
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/contacts", contactRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/education", educationRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -39,8 +43,12 @@ app.use((err, req, res, next) => {
     res.status(401).json({ error: err.name + ": " + err.message });
   } else if (err) {
     res.status(400).json({ error: err.name + ": " + err.message });
-    console.log(err);
+    console.error(err);
   }
 });
+
+// Puerto dinámico para Vercel
+const PORT = process.env.PORT || 3005;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 export default app;
