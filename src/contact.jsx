@@ -33,7 +33,7 @@ export default function Contact() {
     setOpenSnackbar(true);
     reset();
     
-    // Redirigir después de 2 segundos
+    
     setTimeout(() => {
       window.location.href = "/";
     }, 2000);

@@ -12,8 +12,7 @@ import {
 } from '@mui/material';
 import { Email as EmailIcon, Lock as LockIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005/api';
+import { API_URL } from './config'; 
 
 export default function Login() {
   const navigate = useNavigate();
@@ -40,9 +39,7 @@ export default function Login() {
       
       const response = await fetch(`${API_URL}/auth/signin`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
@@ -56,12 +53,10 @@ export default function Login() {
       const result = await response.json();
       console.log('✅ Login successful:', result);
 
-      // Guardar token y usuario
       localStorage.setItem('authToken', result.token);
       localStorage.setItem('currentUser', JSON.stringify(result.user));
       localStorage.setItem('isLoggedIn', 'true');
 
-      // Redirigir al home
       window.location.href = '/';
 
     } catch (error) {
@@ -82,11 +77,7 @@ export default function Login() {
           Welcome back! Please sign in to your account.
         </Typography>
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
+        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
         <form onSubmit={handleSubmit}>
           <Stack spacing={3}>
@@ -97,9 +88,7 @@ export default function Login() {
               type="email"
               variant="outlined"
               required
-              InputProps={{
-                startAdornment: <EmailIcon color="action" sx={{ mr: 1 }} />
-              }}
+              InputProps={{ startAdornment: <EmailIcon color="action" sx={{ mr: 1 }} /> }}
             />
             <TextField
               fullWidth
@@ -108,9 +97,7 @@ export default function Login() {
               type="password"
               variant="outlined"
               required
-              InputProps={{
-                startAdornment: <LockIcon color="action" sx={{ mr: 1 }} />
-              }}
+              InputProps={{ startAdornment: <LockIcon color="action" sx={{ mr: 1 }} /> }}
             />
 
             <Button

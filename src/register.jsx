@@ -12,8 +12,7 @@ import {
 } from '@mui/material';
 import { Person as PersonIcon, Email as EmailIcon, Lock as LockIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005/api';
+import { API_URL } from './config';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -31,7 +30,6 @@ export default function Register() {
     const password = formData.get('password');
     const confirmPassword = formData.get('confirmPassword');
 
-    // Validaciones
     if (!name || !email || !password || !confirmPassword) {
       setError('All fields are required');
       setLoading(false);
@@ -51,19 +49,12 @@ export default function Register() {
     }
 
     try {
-      const userData = {
-        name: name,
-        email: email,
-        password: password,
-      };
-
+      const userData = { name, email, password };
       console.log('🚀 Registering user:', userData);
-      
+
       const response = await fetch(`${API_URL}/auth/signup`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
       });
 
@@ -77,12 +68,10 @@ export default function Register() {
       const result = await response.json();
       console.log('✅ Registration successful:', result);
 
-      // Guardar token y usuario en localStorage
       localStorage.setItem('authToken', result.token);
       localStorage.setItem('currentUser', JSON.stringify(result.user));
       localStorage.setItem('isLoggedIn', 'true');
 
-      // Redirigir al home
       window.location.href = '/';
 
     } catch (error) {
@@ -103,11 +92,7 @@ export default function Register() {
           Join us and start your journey
         </Typography>
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
+        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
         <form onSubmit={handleSubmit}>
           <Stack spacing={3}>
@@ -117,9 +102,7 @@ export default function Register() {
               name="name"
               variant="outlined"
               required
-              InputProps={{
-                startAdornment: <PersonIcon color="action" sx={{ mr: 1 }} />
-              }}
+              InputProps={{ startAdornment: <PersonIcon color="action" sx={{ mr: 1 }} /> }}
             />
             <TextField
               fullWidth
@@ -128,9 +111,7 @@ export default function Register() {
               type="email"
               variant="outlined"
               required
-              InputProps={{
-                startAdornment: <EmailIcon color="action" sx={{ mr: 1 }} />
-              }}
+              InputProps={{ startAdornment: <EmailIcon color="action" sx={{ mr: 1 }} /> }}
             />
             <TextField
               fullWidth
@@ -139,9 +120,7 @@ export default function Register() {
               type="password"
               variant="outlined"
               required
-              InputProps={{
-                startAdornment: <LockIcon color="action" sx={{ mr: 1 }} />
-              }}
+              InputProps={{ startAdornment: <LockIcon color="action" sx={{ mr: 1 }} /> }}
             />
             <TextField
               fullWidth
@@ -150,9 +129,7 @@ export default function Register() {
               type="password"
               variant="outlined"
               required
-              InputProps={{
-                startAdornment: <LockIcon color="action" sx={{ mr: 1 }} />
-              }}
+              InputProps={{ startAdornment: <LockIcon color="action" sx={{ mr: 1 }} /> }}
             />
 
             <Button

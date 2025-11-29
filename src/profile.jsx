@@ -22,7 +22,7 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = 'http://localhost:3005/api';
+import { API_URL } from './config'; 
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ export default function Profile() {
         return;
       }
 
-      const response = await fetch(`${API_BASE_URL}/users/profile`, {
+      const response = await fetch(`${API_URL}/users/profile`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -96,7 +96,6 @@ export default function Profile() {
             <Typography variant="h4" component="h1" fontWeight={700} gutterBottom>
               {user.name}
             </Typography>
-            {/* Se eliminaron educación, disponibilidad y tipo de perfil */}
           </Box>
           <Button
             variant="contained"
@@ -161,7 +160,7 @@ export default function Profile() {
                 </Box>
               )}
               {user.linkedin && (
-                <Box sx={{ display: '-flex', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <LinkedIn sx={{ mr: 2, color: 'text.secondary' }} />
                   <Typography>
                     <a href={user.linkedin} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>

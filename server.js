@@ -1,26 +1,57 @@
-import config from "./config/config.js";
-import app from "./server/express.js";
+// server.js
+import express from "express";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+
+if (process.env.NODE_ENV === "production") {
+  
+  dotenv.config();
+} else {
+
+  dotenv.config({ path: ".env.local" });
+}
+
+
+const PORT = process.env.PORT || 3005;
+const MONGO_URI = process.env.MONGO_URI;
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!MONGO_URI) {
+  console.error("⚠️ Error: MONGO_URI no está definida.");
+  process.exit(1); 
+}
+
+
+const app = express();
+
+
+app.use(express.json());
+
+
 mongoose.Promise = global.Promise;
 mongoose
-  .connect(config.mongoUri, {
-    //useNewUrlParser: true,
-    //useCreateIndex: true,
-    //useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log("Connected to the database!");
-  });
-mongoose.connection.on("error", () => {
-  throw new Error(`unable to connect to database: ${config.mongoUri}`);
+  .connect(MONGO_URI)
+  .then(() => console.log("✅ Connected to the database!"))
+  .catch((err) =>
+    console.error(`❌ Unable to connect to database: ${MONGO_URI}`, err)
+  );
+
+mongoose.connection.on("error", (err) => {
+  console.error("MongoDB connection error:", err);
 });
+
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to My Portfolio Application" });
 });
-app.listen(config.port, (err) => {
+
+
+app.listen(PORT, (err) => {
   if (err) {
-    console.log(err);
+    console.error(err);
   }
-  console.info("Server started on port %s.", config.port);
-  console.info("server url: http://localhost:%s", config.port);
+  console.info(`Server started on port ${PORT}.`);
+  console.info(`Server URL: http://localhost:${PORT}`);
 });
+
+export default app;
