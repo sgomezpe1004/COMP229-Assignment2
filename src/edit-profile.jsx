@@ -13,9 +13,7 @@ import {
 } from '@mui/material';
 import { Save, Cancel, Person, Email } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005/api';
-
+import { API_URL } from './config'; 
 
 export default function EditProfile() {
   const navigate = useNavigate();
@@ -83,7 +81,7 @@ export default function EditProfile() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`Update failed: ${response.status}`);
+        throw new Error(`Update failed: ${response.status} - ${errorText}`);
       }
 
       const updatedUser = await response.json();

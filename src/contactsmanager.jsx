@@ -21,6 +21,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon, Send as SendIcon } from '@mui/icons-material';
+import { API_URL } from './config'; 
 
 export default function ContactsManager() {
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
@@ -31,8 +32,7 @@ export default function ContactsManager() {
   const [selectedIds, setSelectedIds] = useState([]);
 
   const token = localStorage.getItem("authToken");
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005/api';
-  
+
   const fetchContacts = async () => {
     try {
       const res = await fetch(`${API_URL}/contacts`, {
