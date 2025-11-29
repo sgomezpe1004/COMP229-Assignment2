@@ -59,10 +59,11 @@ export default function About() {
                 <SchoolIcon fontSize="small" color="action" />
                 <Typography variant="body2" color="text.secondary">
                   Centennial College
+                  <p style={{ color: 'blue' }}>This is a change for CI/CD Test.</p>
                 </Typography>
               </Box>
             </Stack>
-            
+        
             <Stack spacing={1} sx={{ width: '100%' }}>
               <Button
                 variant="contained"
