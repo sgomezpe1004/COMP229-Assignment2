@@ -31,10 +31,11 @@ export default function ContactsManager() {
   const [selectedIds, setSelectedIds] = useState([]);
 
   const token = localStorage.getItem("authToken");
-
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005/api';
+  
   const fetchContacts = async () => {
     try {
-      const res = await fetch('http://localhost:3005/api/contacts', {
+      const res = await fetch(`${API_URL}/contacts`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) throw new Error('Failed to fetch contacts');
@@ -53,7 +54,7 @@ export default function ContactsManager() {
 
   const handleAddOrUpdate = async (data) => {
     try {
-      let url = 'http://localhost:3005/api/contacts';
+      let url = `${API_URL}/contacts`;
       let method = 'POST';
 
       if (editingId) {
@@ -78,7 +79,6 @@ export default function ContactsManager() {
       });
 
       const responseBody = await res.json();
-
       if (!res.ok) throw new Error(JSON.stringify(responseBody));
 
       setSnackbarMsg(editingId ? 'Contact updated!' : 'Contact added!');
@@ -103,7 +103,7 @@ export default function ContactsManager() {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3005/api/contacts/${id}`, {
+      const res = await fetch(`${API_URL}/contacts/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -122,7 +122,7 @@ export default function ContactsManager() {
     if (selectedIds.length === 0) return;
 
     try {
-      const res = await fetch('http://localhost:3005/api/contacts', {
+      const res = await fetch(`${API_URL}/contacts`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +132,6 @@ export default function ContactsManager() {
       });
 
       const result = await res.json();
-
       if (!res.ok) throw new Error(JSON.stringify(result));
 
       setSnackbarMsg('Selected contacts deleted!');
@@ -167,39 +166,39 @@ export default function ContactsManager() {
             <form onSubmit={handleSubmit(handleAddOrUpdate)}>
               <Stack spacing={2}>
                 <TextField
-  label="First Name"
-  fullWidth
-  {...register('firstname', { required: 'Required' })}
-  error={!!errors.firstname}
-  helperText={errors.firstname?.message}
-  InputLabelProps={{ shrink: true }} // <--- siempre fijo
-/>
-<TextField
-  label="Last Name"
-  fullWidth
-  {...register('lastname', { required: 'Required' })}
-  error={!!errors.lastname}
-  helperText={errors.lastname?.message}
-  InputLabelProps={{ shrink: true }} // <--- siempre fijo
-/>
-<TextField
-  label="Email"
-  fullWidth
-  type="email"
-  {...register('email', {
-    required: 'Required',
-    pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email' }
-  })}
-  error={!!errors.email}
-  helperText={errors.email?.message}
-  InputLabelProps={{ shrink: true }} // <--- ya estaba
-/>
-<TextField
-  label="Contact Number"
-  fullWidth
-  {...register('contactNumber')}
-  InputLabelProps={{ shrink: true }} // <--- agregado
-/>
+                  label="First Name"
+                  fullWidth
+                  {...register('firstname', { required: 'Required' })}
+                  error={!!errors.firstname}
+                  helperText={errors.firstname?.message}
+                  InputLabelProps={{ shrink: true }}
+                />
+                <TextField
+                  label="Last Name"
+                  fullWidth
+                  {...register('lastname', { required: 'Required' })}
+                  error={!!errors.lastname}
+                  helperText={errors.lastname?.message}
+                  InputLabelProps={{ shrink: true }}
+                />
+                <TextField
+                  label="Email"
+                  fullWidth
+                  type="email"
+                  {...register('email', {
+                    required: 'Required',
+                    pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email' }
+                  })}
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                  InputLabelProps={{ shrink: true }}
+                />
+                <TextField
+                  label="Contact Number"
+                  fullWidth
+                  {...register('contactNumber')}
+                  InputLabelProps={{ shrink: true }}
+                />
 
                 <Button type="submit" variant="contained" startIcon={<SendIcon />}>
                   {editingId ? 'Update Contact' : 'Add Contact'}

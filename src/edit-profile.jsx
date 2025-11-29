@@ -14,7 +14,8 @@ import {
 import { Save, Cancel, Person, Email } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = 'http://localhost:3005/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005/api';
+
 
 export default function EditProfile() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ export default function EditProfile() {
         return;
       }
 
-      const response = await fetch(`${API_BASE_URL}/users/profile`, {
+      const response = await fetch(`${API_URL}/users/profile`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -71,7 +72,7 @@ export default function EditProfile() {
         email: formData.get('email'),
       };
 
-      const response = await fetch(`${API_BASE_URL}/users/profile`, {
+      const response = await fetch(`${API_URL}/users/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

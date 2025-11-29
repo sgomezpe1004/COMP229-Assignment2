@@ -13,7 +13,7 @@ import {
 import { Email as EmailIcon, Lock as LockIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = 'http://localhost:3005/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005/api';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ export default function Login() {
     try {
       console.log('🔐 Attempting login:', { email });
       
-      const response = await fetch(`${API_BASE_URL}/auth/signin`, {
+      const response = await fetch(`${API_URL}/auth/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

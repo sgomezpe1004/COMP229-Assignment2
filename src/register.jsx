@@ -13,7 +13,7 @@ import {
 import { Person as PersonIcon, Email as EmailIcon, Lock as LockIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = 'http://localhost:3005/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005/api';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ export default function Register() {
 
       console.log('🚀 Registering user:', userData);
       
-      const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+      const response = await fetch(`${API_URL}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
